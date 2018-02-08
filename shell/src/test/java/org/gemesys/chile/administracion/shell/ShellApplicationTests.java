@@ -1,4 +1,4 @@
-package org.iddam.chile.administracion.shell;
+package org.gemesys.chile.administracion.shell;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
