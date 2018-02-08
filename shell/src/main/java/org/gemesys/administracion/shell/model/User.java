@@ -36,7 +36,7 @@ public class User {
     private String password;
 
     @Column(name = "user_name")
-    @NotEmpty(message = "*Ingrese su nombre")
+    @NotEmpty(message = "*Ingrese nombre")
     private String name;
 
     @Column(name = "user_last_name1")
