@@ -13,10 +13,27 @@
 <body>
 <div class="container">
 
-    <form th:action="@{/logout}" method="get">
-        <button class="btn btn-md btn-danger btn-block" name="registration"
-                type="Submit">Logout</button>
-    </form>
+    <div class="panel-group" style="margin-top:40px">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="col-lg-1">
+                    <form th:action="@{/home}" method="get">
+                        <button class="btn btn-primary" name="home"
+                                type="Submit">Home
+                        </button>
+                    </form>
+                </div>
+
+                <div class="col-lg-1">
+                    <form th:action="@{/logout}" method="get">
+                        <button class="btn btn-danger" name="logout"
+                                type="Submit">Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
