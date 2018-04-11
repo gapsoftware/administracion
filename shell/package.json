@@ -1,18 +1,20 @@
 {
   "name": "shell-react",
-  "version": "1.0.0",
+  "version": "1.0.0-SNAPSHOT",
   "description": "front-end del shell de administración Gemesys",
   "private": true,
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1"
+    "react-scripts": "1.1.1",
+    "webpack": "^1.12.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "watch": "webpack --watch -d"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
