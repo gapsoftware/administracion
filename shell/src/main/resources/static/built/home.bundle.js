@@ -75,17 +75,216 @@
 	        value: function render() {
 	            return React.createElement(
 	                'div',
-	                { className: 'col-lg-12' },
-	                React.createElement(
-	                    'h1',
-	                    null,
-	                    'P\xE1gina de inicio (Home - Gabriel P\xE9rez)'
-	                )
+	                null,
+	                React.createElement(AppHomeHeader, null),
+	                React.createElement(ModuleBox, null)
 	            );
 	        }
 	    }]);
 	
 	    return AppHome;
+	}(React.Component);
+	
+	var AppHomeHeader = function (_React$Component2) {
+	    _inherits(AppHomeHeader, _React$Component2);
+	
+	    function AppHomeHeader() {
+	        _classCallCheck(this, AppHomeHeader);
+	
+	        return _possibleConstructorReturn(this, (AppHomeHeader.__proto__ || Object.getPrototypeOf(AppHomeHeader)).apply(this, arguments));
+	    }
+	
+	    _createClass(AppHomeHeader, [{
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'nav',
+	                { className: 'navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top' },
+	                React.createElement(
+	                    'div',
+	                    null,
+	                    React.createElement(
+	                        'div',
+	                        { className: 'navbar-header' },
+	                        React.createElement(
+	                            'a',
+	                            { className: 'navbar-brand', href: '#' },
+	                            'GEMESYS Administraci\xF3n'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
+	                        React.createElement(
+	                            'ul',
+	                            { className: 'nav navbar-nav' },
+	                            React.createElement(
+	                                'li',
+	                                { className: 'active' },
+	                                React.createElement(
+	                                    'a',
+	                                    { href: 'home.html' },
+	                                    React.createElement('span', { className: 'glyphicon glyphicon-home' }),
+	                                    'Home'
+	                                )
+	                            ),
+	                            React.createElement(
+	                                'li',
+	                                null,
+	                                React.createElement(
+	                                    'a',
+	                                    { href: '#' },
+	                                    React.createElement('span', { className: 'glyphicon glyphicon-king' }),
+	                                    'Acerca de...'
+	                                )
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'ul',
+	                            { className: 'nav navbar-nav navbar-right' },
+	                            React.createElement(
+	                                'li',
+	                                null,
+	                                React.createElement(
+	                                    'a',
+	                                    { href: '#' },
+	                                    React.createElement('span', { className: 'glyphicon glyphicon-user' }),
+	                                    ' Perfil del Usuario'
+	                                )
+	                            ),
+	                            React.createElement(
+	                                'li',
+	                                null,
+	                                React.createElement(
+	                                    'a',
+	                                    { href: '/logout' },
+	                                    React.createElement('span', { className: 'glyphicon glyphicon-log-out' }),
+	                                    ' Cerrar Sesi\xF3n'
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return AppHomeHeader;
+	}(React.Component);
+	
+	var ModuleBox = function (_React$Component3) {
+	    _inherits(ModuleBox, _React$Component3);
+	
+	    function ModuleBox(props) {
+	        _classCallCheck(this, ModuleBox);
+	
+	        var _this3 = _possibleConstructorReturn(this, (ModuleBox.__proto__ || Object.getPrototypeOf(ModuleBox)).call(this, props));
+	
+	        _this3.state = {
+	            data: []
+	        };
+	        return _this3;
+	    }
+	
+	    _createClass(ModuleBox, [{
+	        key: 'getData',
+	        value: function getData() {
+	            $.ajax({
+	                url: '/rest/modulos/',
+	                method: 'get',
+	                dataType: 'json',
+	                contentType: "application/json; charset=utf-8",
+	                success: function (response) {
+	                    this.setState({ data: response });
+	                }.bind(this),
+	                error: function (err) {
+	                    location.href = '';
+	                }.bind(this),
+	                beforeSend: function () {
+	                    $('#preloader').show();
+	                }.bind(this),
+	                complete: function () {
+	                    $('#preloader').hide();
+	                }.bind(this)
+	            });
+	        }
+	    }, {
+	        key: 'getMenusByModulo',
+	        value: function getMenusByModulo(listmenus) {
+	
+	            if (listmenus.length > 0) {
+	                var menus = listmenus.map(function (menuData, index) {
+	                    return React.createElement(
+	                        'li',
+	                        { key: menuData.id },
+	                        React.createElement(
+	                            'a',
+	                            { href: 'google.cl' },
+	                            menuData.name
+	                        )
+	                    );
+	                });
+	                return menus;
+	            } else {
+	                return null;
+	            }
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.getData();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	
+	            var self = this;
+	
+	            var modulos = this.state.data.map(function (moduloData, index) {
+	
+	                var listmenus = self.getMenusByModulo(moduloData.menus);
+	
+	                return React.createElement(
+	                    'div',
+	                    { key: moduloData.id, className: 'col-sm-4' },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'panel panel-primary' },
+	                        React.createElement(
+	                            'div',
+	                            { className: 'panel-heading' },
+	                            React.createElement(
+	                                'h6',
+	                                { className: 'panel-title' },
+	                                moduloData.name
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'div',
+	                            { className: 'panel-body' },
+	                            React.createElement(
+	                                'ul',
+	                                null,
+	                                listmenus
+	                            )
+	                        )
+	                    )
+	                );
+	            });
+	
+	            return React.createElement(
+	                'div',
+	                { className: 'container-fluid' },
+	                React.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    modulos
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return ModuleBox;
 	}(React.Component);
 	
 	ReactDOM.render(React.createElement(AppHome, null), document.getElementById('react'));
