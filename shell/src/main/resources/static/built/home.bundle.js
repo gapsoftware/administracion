@@ -278,6 +278,15 @@
 	                React.createElement(
 	                    'div',
 	                    { className: 'row' },
+	                    React.createElement(
+	                        'h5',
+	                        { className: 'bg-dark text-white' },
+	                        'M\xD3DULOS DISPONIBLES'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'row' },
 	                    modulos
 	                )
 	            );

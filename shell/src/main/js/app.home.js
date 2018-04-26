@@ -151,6 +151,10 @@ class ModuleBox extends React.Component {
 
             <div className="container-fluid">
                 <div className="row">
+                        <h5 className="bg-dark text-white">MÓDULOS DISPONIBLES</h5>
+                </div>
+
+                <div className="row">
                     {modulos}
                 </div>
             </div>

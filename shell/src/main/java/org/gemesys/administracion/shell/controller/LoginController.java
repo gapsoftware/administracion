@@ -1,10 +1,15 @@
 package org.gemesys.administracion.shell.controller;
 
+import org.gemesys.administracion.shell.model.Module;
 import org.gemesys.administracion.shell.model.User;
+import org.gemesys.administracion.shell.service.ModuleService;
 import org.gemesys.administracion.shell.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by gperezv on 07-02-18.
@@ -21,8 +28,13 @@ import javax.validation.Valid;
 @Controller
 public class LoginController {
 
+    private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ModuleService moduleService;
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
     public ModelAndView login(){
@@ -33,8 +45,20 @@ public class LoginController {
 
     @RequestMapping(value="/home", method = RequestMethod.GET)
     public ModelAndView home(){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Collection roleslogueados = userDetails.getAuthorities();
+
+        logger.info("GMSYSADMIN- Usuario logueado: ["+currentPrincipalName+"]");
+
+        List<Module> allmodulos = moduleService.findAllActiveNoEmptyAndAuth(roleslogueados);
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/home");
+        modelAndView.addObject("currentPrincipalName",currentPrincipalName);
+        modelAndView.addObject("roleslogueados",roleslogueados);
         return modelAndView;
     }
 

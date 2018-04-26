@@ -1,16 +1,80 @@
 <!DOCTYPE html>
-<html>
-    <head lang="es">
-        <title>HOME-módulos de administración Gemesys</title>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width,
-        initial-scale=1, maximum-scale=1, user-scalable=no"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    </head>
+<html xmlns:th="http://www.thymeleaf.org">
 
-    <body>
-        <div id="react"></div>
-        <script src="/built/home.bundle.js"></script>
-    </body>
+<head lang="es">
+    <title>HOME-módulos de administración Gemesys</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,
+        initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+<div>
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+        <div>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">GMSYS Administración</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="home.html">
+                            <span class="glyphicon glyphicon-home"></span>
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-king"></span>
+                            Acerca de...
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-user"></span> Perfil del Usuario
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/logout">
+                            <span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div className="container-fluid">
+        <div className="row">
+            <div class="col-sm-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h6 class="panel-title">{moduloData.name}</h6>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            {listmenus}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
 </html>
+
+<!--<div id="react"></div>-->
+<!--<script src="/built/home.bundle.js"></script>-->

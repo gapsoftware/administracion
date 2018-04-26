@@ -1,16 +1,22 @@
 package org.gemesys.administracion.shell.controller;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.gemesys.administracion.shell.dto.MenuDTO;
 import org.gemesys.administracion.shell.dto.ModuleDTO;
 import org.gemesys.administracion.shell.model.Menu;
 import org.gemesys.administracion.shell.model.Module;
+import org.gemesys.administracion.shell.model.User;
 import org.gemesys.administracion.shell.service.MenuService;
 import org.gemesys.administracion.shell.service.ModuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,11 +42,11 @@ public class ModuleAndMenuController {
      ****************/
 
     @RequestMapping(value = "/rest/modulos", method = RequestMethod.GET)
-    public ResponseEntity<?> fetchModulos() {
+    public ResponseEntity<?> fetchModulos(HttpServletRequest request) {
 
-        logger.info("GMSYSADMIN - module - Listando todos los módulos existentes");
+        logger.info("GMSYSADMIN - module - Listando todos los módulos existentes con estado activo y no vacíos de menús");
 
-        List<Module> allmodulos = moduleService.findAll();
+        List<Module> allmodulos = moduleService.findAllActiveNoEmpty();
 
         if (allmodulos.isEmpty()) {
             logger.error("GMSYSADMIN - module - ERROR: No existen módulos a listar");
