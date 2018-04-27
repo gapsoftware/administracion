@@ -58,7 +58,7 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/home");
         modelAndView.addObject("currentPrincipalName",currentPrincipalName);
-        modelAndView.addObject("roleslogueados",roleslogueados);
+        modelAndView.addObject("modulos",allmodulos);
         return modelAndView;
     }
 

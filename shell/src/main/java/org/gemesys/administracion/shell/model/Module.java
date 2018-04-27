@@ -28,7 +28,7 @@ public class Module {
     @Column(name = "module_order")
     private int order;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "module_menu",
             joinColumns = @JoinColumn(name = "module_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private Set<Menu> menus;

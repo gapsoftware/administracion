@@ -40,7 +40,8 @@
 
                     <li>
                         <a href="#">
-                            <span class="glyphicon glyphicon-user"></span> Perfil del Usuario
+                            <span class="glyphicon glyphicon-user" th:text="${currentPrincipalName}">
+                            </span>
                         </a>
                     </li>
 
@@ -56,20 +57,28 @@
 
 
     <div className="container-fluid">
-        <div className="row">
-            <div class="col-sm-4">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h6 class="panel-title">{moduloData.name}</h6>
-                    </div>
-                    <div class="panel-body">
-                        <ul>
-                            {listmenus}
-                        </ul>
+        <th:block th:each="modulo : ${modulos}">
+            <div className="row">
+                <div class="col-sm-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h6 class="panel-title" th:text="${modulo.name}"></h6>
+                        </div>
+                        <div class="panel-body">
+
+                            <ul>
+                                <th:block th:each="menu : ${modulo.menus}">
+                                    <li>
+                                        <a href="google.cl" th:text="${menu.name}"></a>
+                                    </li>
+                                </th:block>
+                            </ul>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </th:block>
     </div>
 
 </div>

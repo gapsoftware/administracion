@@ -55,15 +55,19 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public ArrayList<Module> findAllActiveNoEmptyAndAuth(Collection roleslogueados) {
 
-        logger.info("GMSYSADMIN- roles autorizados: "+roleslogueados+"");
+        logger.info("GMSYSADMIN- roles autorizados: " + roleslogueados + "");
 
         //Obtiene los módulos que están en status activo y que contienen menús
         ArrayList<Module> modulosactivosNoVacios = findAllActiveNoEmpty();
+        ArrayList<Module> modulosautorizados = new ArrayList<>();
+
+
         Iterator<Module> iterModule = modulosactivosNoVacios.iterator();
         while (iterModule.hasNext()) {
-            //Obtiene los menús que coinciden con los roles del usuario conectado
+            //Obtiene los menús que coinciden con los roles del usuario conectado y los vacía en Set menusautorizados
             Module itemModule = iterModule.next();
             Set<Menu> menus = itemModule.getMenus();
+            Set<Menu> menusautorizados = new HashSet<>();
             Iterator<Menu> iterMenu = menus.iterator();
             while (iterMenu.hasNext()) {
                 Menu itemMenu = iterMenu.next();
@@ -71,21 +75,34 @@ public class ModuleServiceImpl implements ModuleService {
                 Iterator<Role> iterRole = roles.iterator();
                 while (iterRole.hasNext()) {
                     Role itemRole = iterRole.next();
-                    System.out.println("Menú: "+itemMenu.getName() + "- Rol: " + itemRole.getRole());
                     Iterator<SimpleGrantedAuthority> iterRolLogueado = roleslogueados.iterator();
-                    while (iterRolLogueado.hasNext()){
+                    while (iterRolLogueado.hasNext()) {
                         SimpleGrantedAuthority itemRolLogueado = iterRolLogueado.next();
                         if (itemRolLogueado.toString().equals(itemRole.getRole())) {
-                            System.out.println("Menú: "+itemMenu.getName() + "- Rol: " + itemRole.getRole()
-                                             + " AUTORIZADO");
+                            menusautorizados.add(itemMenu);
                         }
                     }
                 }
             }
+            if (menusautorizados != null) {
+                if (!menusautorizados.isEmpty()) {
+                    itemModule.setMenus(menusautorizados);
+                    modulosautorizados.add(itemModule);
+                }
+            }
         }
 
-
-        return modulosactivosNoVacios;
+        Iterator<Module> iterModulosAutorizados = modulosautorizados.iterator();
+        while (iterModulosAutorizados.hasNext()) {
+            Module itemModuloAutorizado = iterModulosAutorizados.next();
+            logger.info("MODULO " + itemModuloAutorizado.getName() + "--AUTORIZADO--");
+            Iterator<Menu> iterMenuAutorizado = itemModuloAutorizado.getMenus().iterator();
+            while (iterMenuAutorizado.hasNext()) {
+                Menu itemMenuAutorizado = iterMenuAutorizado.next();
+                logger.info(itemMenuAutorizado.getName());
+            }
+        }
+        return modulosautorizados;
     }
 
     @Override
