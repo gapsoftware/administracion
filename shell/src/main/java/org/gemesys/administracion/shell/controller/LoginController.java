@@ -48,16 +48,19 @@ public class LoginController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
+        User usuario = userService.findUserByEmail(currentPrincipalName);
+        String nombreUsuario = usuario.getName()+" "+usuario.getLastName1();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Collection roleslogueados = userDetails.getAuthorities();
 
-        logger.info("GMSYSADMIN- Usuario logueado: ["+currentPrincipalName+"]");
+        logger.info("GMSYSADMIN- Usuario logueado: ["+currentPrincipalName+"] ["+nombreUsuario+"]");
 
         List<Module> allmodulos = moduleService.findAllActiveNoEmptyAndAuth(roleslogueados);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/home");
         modelAndView.addObject("currentPrincipalName",currentPrincipalName);
+        modelAndView.addObject("nombreUsuario",nombreUsuario);
         modelAndView.addObject("modulos",allmodulos);
         return modelAndView;
     }
