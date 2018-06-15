@@ -105,6 +105,14 @@ public class LoginController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/admin/usuarios", method = RequestMethod.GET)
+    public ModelAndView adminUsuarios(){
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        modelAndView.setViewName("admin/adm-usuarios");
+        return modelAndView;
+    }
+
     @RequestMapping(value="/account/main", method = RequestMethod.GET)
     public ModelAndView account_main(){
         ModelAndView modelAndView = new ModelAndView();
@@ -113,6 +121,8 @@ public class LoginController {
         modelAndView.setViewName("account/main");
         return modelAndView;
     }
+
+
 
     @RequestMapping(value="/access-denied", method = RequestMethod.GET)
     public ModelAndView noaccess(){

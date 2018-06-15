@@ -23,7 +23,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private int id;
+    private Long id;
 
     @Column(name = "user_email")
     @Email(message = "*Ingrese un e-mail válido")
@@ -70,11 +70,11 @@ public class User {
 
 // getters and setters
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

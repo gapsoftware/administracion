@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head lang="es">
+    <title>Gestión de Información del Usuario</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,
+        initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.17/css/jquery.dataTables.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.17/js/jquery.dataTables.min.js"></script>
+
+</head>
+
+<body>
+
+<table id="adm-usuarios">
+    <thead>
+    <tr>
+        <th>name</th>
+        <th>email</th>
+    </tr>
+    </thead>
+</table>
+
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('#adm-usuarios').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/rest/users',
+                dataSrc:'_embedded.users'
+            },
+            columns: [
+                {"data": "name"},
+                {"data": "email"}
+            ]
+        });
+    });
+</script>
+
+</html>

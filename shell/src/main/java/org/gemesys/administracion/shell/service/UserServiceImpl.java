@@ -5,11 +5,15 @@ import org.gemesys.administracion.shell.model.User;
 import org.gemesys.administracion.shell.repository.RoleRepository;
 import org.gemesys.administracion.shell.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by gperezv on 07-02-18.
@@ -28,6 +32,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Page<User> findAllPaginated(int page, int size) {
+        return (Page<User>) userRepository.findAll(new PageRequest(page, size));
     }
 
     @Override
