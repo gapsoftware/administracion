@@ -48,12 +48,13 @@
                     ajax: {
                         url: "/rest/users",
                         data: (function(data){
+
                             console.log(data);
                             console.log(data.start);
                             console.log(data.length);
                             console.log((data.start == 0) ? 1 : (data.start / data.length)+1);
 
-                            var restUserParameters = new Array();
+                            var restUserParameters = [];
                             restUserParameters.push({"name" : "limit", "value": data.length});
                             restUserParameters.push({"name" : "page", "value": (data.start == 0) ? 1 : (data.start / data.length)+1});
                             return restUserParameters;
