@@ -7,19 +7,15 @@
     <meta name="viewport" content="width=device-width,
         initial-scale=1, maximum-scale=1, user-scalable=no"/>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css>
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.17/css/jquery.dataTables.min.css">
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.17/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
 </head>
 
 <body>
 
-<table id="adm-usuarios" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+<table id="adm-usuarios" class="display" style="width:100%">
     <thead>
     <tr>
         <th>nombre</th>
@@ -38,40 +34,46 @@
 
         $('#adm-usuarios').DataTable({
 
-           processing: true,
+            processing: true,
 
-           serverSide: true,
+            serverSide: true,
 
-           ajax: {
-              url: "/rest/users",
+            ajax: {
+                url: "/rest/users",
 
-              data: (function (data) {
-                /*console.log(data);
-                console.log(data.start);
-                console.log(data.length);
-                console.log((data.start == 0) ? 1 : (data.start / data.length) + 1);*/
+                dataFilter: (function (data) {
 
-                var restUserParameters = [];
-                restUserParameters.push({"name": "limit", "value": data.length});
-                restUserParameters.push({"name": "page","value": (data.start == 0) ? 1 : (data.start / data.length) + 1});
-                return restUserParameters;
-              }),
+                    var json = jQuery.parseJSON(data);
+                    json.recordsTotal = json.page.totalElements;
+                    json.recordsFiltered = json.page.totalElements;
+                    return JSON.stringify(json);
 
-              dataSrc: "_embedded.users",
-           },
+                }),
 
-           columns: [
-               {data: "name", render: function(data, type, row){
-                   console.log(data);
-                   console.log(type);
-                   console.log(row);
-                   if (type=='display'){
-                       return data + ' ' + row.lastName1 + ' ' + row.lastName2
-                   }
-               }},
+                data: (function (data) {
 
-               {data: "email"}
-           ]
+                    largoSetRegistros = data.length;
+                    paginaActual = ((data.start == 0) ? 1 : (data.start / data.length) + 1);
+                    var restUserParameters = [];
+                    restUserParameters.push({"name": "size", "value": largoSetRegistros});
+                    restUserParameters.push({"name": "page", "value": paginaActual});
+                    return restUserParameters;
+                }),
+
+                dataSrc: "_embedded.users",
+            },
+
+            columns: [
+                {
+                    data: "name", render: function (data, type, row) {
+                    if (type == 'display') {
+                        return data + ' ' + row.lastName1 + ' ' + row.lastName2
+                    }
+                }
+                },
+
+                {data: "email"}
+            ]
         });
     });
 
