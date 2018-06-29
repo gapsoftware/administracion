@@ -67,7 +67,7 @@
                     var url = source.ajax.url;
 
                     largoSetRegistros = data.length;
-                    paginaActual = ((data.start == 0) ? 1 : (data.start / data.length) + 1);
+                    paginaActual = ((data.start == 0) ? 0 : (data.start / data.length) + 1);
                     textoBusqueda = data.search.value;
 
                     var restUserParameters = [];

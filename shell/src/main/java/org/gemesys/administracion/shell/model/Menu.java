@@ -19,14 +19,17 @@ public class Menu {
     @Column(name = "menu_id")
     private int id;
 
-    @Column(name = "menu_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "menu_active")
+    @Column(name = "active")
     private int active;
 
-    @Column(name = "menu_order")
-    private int order;
+    @Column(name = "sortorder")
+    private int sortorder;
+
+    @Column(name = "url")
+    private String url;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "menu_role",
@@ -38,10 +41,11 @@ public class Menu {
     public Menu() {
     }
 
-    public Menu(String name, int active, int order) {
+    public Menu(String name, int active, int sortorder, String url) {
         this.name = name;
         this.active = active;
-        this.order = order;
+        this.sortorder = sortorder;
+        this.url = url;
     }
 
 //getters and setters
@@ -70,12 +74,20 @@ public class Menu {
         this.active = active;
     }
 
-    public int getOrder() {
-        return order;
+    public int getSortorder() {
+        return sortorder;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setSortorder(int sortorder) {
+        this.sortorder = sortorder;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Set<Role> getRoles() {

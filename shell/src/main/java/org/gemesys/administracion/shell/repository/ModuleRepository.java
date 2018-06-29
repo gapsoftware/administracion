@@ -21,7 +21,7 @@ public interface ModuleRepository extends JpaRepository<Module, Integer> {
     int conteoModulosMismoNombre(@Param("name") String name);
 
     @Query
-    ("select M from Module M where M.active=1 order by M.order ASC")
+    ("select M from Module M where M.active=1 order by M.sortOrder ASC")
     ArrayList<Module> findAllActive();
 
 }

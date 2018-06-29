@@ -9,6 +9,7 @@ public class MenuDTO {
     private String nombre;
     private int orden;
     private int activo;
+    private String url;
 
     public int getId() {
         return id;
@@ -40,5 +41,13 @@ public class MenuDTO {
 
     public void setActivo(int activo) {
         this.activo = activo;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

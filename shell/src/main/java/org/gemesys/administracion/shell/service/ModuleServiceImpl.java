@@ -139,7 +139,7 @@ public class ModuleServiceImpl implements ModuleService {
 
         moduloEncontrado.setName(moduleDTO.getNombre());
         moduloEncontrado.setActive(moduleDTO.getActivo());
-        moduloEncontrado.setOrder(moduleDTO.getOrden());
+        moduloEncontrado.setSortOrder(moduleDTO.getOrden());
 
         return moduloEncontrado;
     }

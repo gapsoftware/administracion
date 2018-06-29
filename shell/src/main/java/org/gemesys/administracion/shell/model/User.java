@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.TemporalType.DATE;
@@ -25,42 +26,42 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "user_email")
+    @Column(name = "email")
     @Email(message = "*Ingrese un e-mail válido")
     @NotEmpty(message = "*Ingrese un e-mail")
     private String email;
 
-    @Column(name = "user_password")
+    @Column(name = "password")
     @Length(min = 7, message = "*Su contraseña debe tener 7 caracteres como mínimo")
     @NotEmpty(message = "*Ingrese una contraseña")
     private String password;
 
-    @Column(name = "user_name")
+    @Column(name = "name")
     @NotEmpty(message = "*Ingrese nombre")
     private String name;
 
-    @Column(name = "user_last_name1")
+    @Column(name = "lastname1")
     @NotEmpty(message = "*Ingrese su primer apellido")
     private String lastName1;
 
-    @Column(name = "user_last_name2")
+    @Column(name = "lastname2")
     private String lastName2;
 
 
-   /* @Column(name = "user_creation_date")
-    @NotEmpty(message = "*Fecha de Creación")
+    @Column(name = "creationdate")
     private Date CreationDate;
 
-
-    @Column(name = "user_birth_date")
-    @NotEmpty(message = "*Ingrese su fecha de nacimiento")
+    @Column(name = "birthdate")
     private Date birthDate;
 
-    @Column(name = "user_gender")
-    @NotEmpty(message = "*Hombre o Mujer")
-    private String gender;*/
+    @Column(name = "gender")
+    private String gender;
 
-    @Column(name = "user_active")
+    @OneToMany(cascade = CascadeType.ALL)
+    @Column(name = "enterprise")
+    private List<Enterprise> enterprise;
+
+    @Column(name = "active")
     private int active;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -133,4 +134,37 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public Date getCreationDate() {
+        return CreationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        CreationDate = creationDate;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public List<Enterprise> getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(List<Enterprise> enterprise) {
+        this.enterprise = enterprise;
+    }
+
 }

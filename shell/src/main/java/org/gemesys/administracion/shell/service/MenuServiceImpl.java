@@ -47,6 +47,6 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Builder
     public Menu buildMenu(MenuDTO menuDTO) {
-        return new Menu(menuDTO.getNombre(), menuDTO.getActivo(),menuDTO.getOrden());
+        return new Menu(menuDTO.getNombre(), menuDTO.getActivo(),menuDTO.getOrden(), menuDTO.getUrl());
     }
 }

@@ -19,14 +19,14 @@ public class Module {
     @Column(name = "module_id")
     private int id;
 
-    @Column(name = "module_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "module_active")
+    @Column(name = "active")
     private int active;
 
-    @Column(name = "module_order")
-    private int order;
+    @Column(name = "sortorder")
+    private int sortOrder;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "module_menu",
@@ -40,13 +40,13 @@ public class Module {
     public Module(String name, int active, int order){
         this.name=name;
         this.active=active;
-        this.order=order;
+        this.sortOrder=order;
     }
 
     public Module(String name, int active, int order, Set<Menu> menus){
         this.name=name;
         this.active=active;
-        this.order=order;
+        this.sortOrder=order;
         this.menus=menus;
     }
 
@@ -76,12 +76,12 @@ public class Module {
         this.active = active;
     }
 
-    public int getOrder() {
-        return order;
+    public int getSortOrder() {
+        return sortOrder;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setSortOrder(int sortorder) {
+        this.sortOrder = sortorder;
     }
 
     public Set<Menu> getMenus() {

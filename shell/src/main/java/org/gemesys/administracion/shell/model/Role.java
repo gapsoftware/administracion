@@ -14,7 +14,7 @@ public class Role {
     @Column(name="role_id")
     private int id;
 
-    @Column(name="role_name")
+    @Column(name="name")
     private String role;
 
     public int getId() {
