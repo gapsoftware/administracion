@@ -33,16 +33,17 @@ public class UserRestController {
 
     @RequestMapping(value = "/rest/usuarios", method = RequestMethod.GET)
     public ResponseEntity<?> fetchUsuarios(HttpServletRequest request,
-                                           @RequestParam("page") int page)
+                                           @RequestParam("page") int page,
+                                           @RequestParam("size") int size)
     {
         logger.info("GMSYSADMIN - user - Listando todos los usuarios existentes");
-        Page<User> resultPage = userService.findAllPaginated(page, 10);
+        Page<User> resultPage = userService.findAllPaginated(page, size);
 
         if (page > resultPage.getTotalPages()) {
             logger.error("GMSYSADMIN - users - ERROR: No existen usuarios a listar");
             return new ResponseEntity<>("ERROR: No existen usuarios a listar", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(resultPage.getContent(), HttpStatus.OK);
+        return new ResponseEntity<>(resultPage, HttpStatus.OK);
     }
 }

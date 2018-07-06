@@ -9,10 +9,11 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-
 </head>
 
 <body>
@@ -22,6 +23,7 @@
     <tr>
         <th>E-mail</th>
         <th>Nombre completo</th>
+        <th>Roles</th>
         <th>Estado</th>
     </tr>
     </thead>
@@ -30,12 +32,10 @@
 </body>
 
 <script>
-
-
     $(document).ready(function () {
 
 
-        $('#adm-usuarios').DataTable({
+        var table = $('#adm-usuarios').DataTable({
 
             language: {
                 "lengthMenu": "Mostrando _MENU_ registros por página",
@@ -43,7 +43,11 @@
                 "info": "Mostrando _PAGE_ de _PAGES_ páginas",
                 "infoEmpty": "Sin información",
                 "infoFiltered": "(Registros filtrados de un total de _MAX_)",
-                "search":"Buscar por e-mail"
+                "search": "Buscar por e-mail",
+                paginate: {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }
             },
 
             processing: true,
@@ -51,20 +55,18 @@
             serverSide: true,
 
             ajax: {
-                url: "/rest/users",
+                url: "/rest/usuarios",
 
                 dataFilter: (function (data) {
 
                     var json = jQuery.parseJSON(data);
-                    json.recordsTotal = json.page.totalElements;
-                    json.recordsFiltered = json.page.totalElements;
+                    json.recordsTotal = json.totalElements;
+                    json.recordsFiltered = json.totalElements;
                     return JSON.stringify(json);
 
                 }),
 
                 data: (function (data, source) {
-
-                    var url = source.ajax.url;
 
                     largoSetRegistros = data.length;
                     paginaActual = ((data.start == 0) ? 0 : (data.start / data.length) + 1);
@@ -72,26 +74,30 @@
 
                     var restUserParameters = [];
                     if (textoBusqueda != '') {
-                        source.ajax.url = "/rest/users/search/findByEmailContains";
+                        source.ajax.url = "/rest/usuarios/search/findByEmailContains";
                         restUserParameters.push({"name": "email", "value": textoBusqueda});
                     }
                     else {
-                        source.ajax.url = "/rest/users";
+                        source.ajax.url = "/rest/usuarios";
                         restUserParameters.push({"name": "size", "value": largoSetRegistros});
                         restUserParameters.push({"name": "page", "value": paginaActual});
                     }
                     return restUserParameters;
                 }),
 
-                dataSrc: "_embedded.users",
+                dataSrc: "content",
             },
 
             columns: [
-                {data: "email", defaultContent: ''},
+
+                {
+                    data: "email",
+                    defaultContent: ''
+                },
+
 
                 {
                     data: "name",
-
                     render: function (data, type, row) {
                         if (type == 'display') {
                             return data + ' ' + row.lastName1 + ' ' + row.lastName2
@@ -101,8 +107,21 @@
                 },
 
                 {
-                    data: "active",
+                    data: "roles",
+                    render: function (data, type, row){
+                        var roles = row.roles;
+                        var textoroles='';
+                        roles.forEach(function (obj) {
+                            textoroles += "<span class='badge badge-info'>" + obj.role + "</span><span>&nbsp;</span>";
+                        });
+                        return textoroles;
+                    },
 
+                    defaultContent: ''
+                },
+
+                {
+                    data: "active",
                     render: function (data, type, row) {
                         if (row.active == 1) {
                             return "<span class='badge badge-success'>Activo</span>"
@@ -113,9 +132,8 @@
                     defaultContent: ''
                 }
             ]
-        });
+        })
     });
-
 </script>
 
 </html>
