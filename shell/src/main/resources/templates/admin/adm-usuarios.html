@@ -6,34 +6,45 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width,
         initial-scale=1, maximum-scale=1, user-scalable=no"/>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 </head>
 
 <body>
+<div class="container-fluid">
 
-<table id="adm-usuarios" class="table table-striped table-bordered" style="width:100%">
-    <thead>
-    <tr>
-        <th>E-mail</th>
-        <th>Nombre completo</th>
-        <th>Roles</th>
-        <th>Estado</th>
-    </tr>
-    </thead>
-</table>
+    <div th:replace="header :: copy"></div>
 
+
+    <div class="row">
+        <div class="col-sm-3">
+            <div th:replace="sidebar :: copy"></div>
+        </div>
+
+
+        <div class="col-sm-9">
+            <div class="table-responsive">
+                <table id="adm-usuarios" class="table table-striped table-bordered table-sm">
+                    <thead>
+                    <tr>
+                        <th>E-mail</th>
+                        <th>Nombre completo</th>
+                        <th>Roles</th>
+                        <th>Estado</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 
 <script>
     $(document).ready(function () {
-
 
         var table = $('#adm-usuarios').DataTable({
 
@@ -108,9 +119,9 @@
 
                 {
                     data: "roles",
-                    render: function (data, type, row){
+                    render: function (data, type, row) {
                         var roles = row.roles;
-                        var textoroles='';
+                        var textoroles = '';
                         roles.forEach(function (obj) {
                             textoroles += "<span class='badge badge-info'>" + obj.role + "</span><span>&nbsp;</span>";
                         });

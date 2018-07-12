@@ -46,20 +46,10 @@ public class LoginController {
     @RequestMapping(value="/home", method = RequestMethod.GET)
     public ModelAndView home(){
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        User usuario = userService.findUserByEmail(currentPrincipalName);
-        String nombreUsuario = usuario.getName()+" "+usuario.getLastName1();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Collection roleslogueados = userDetails.getAuthorities();
-
-        logger.info("GMSYSADMIN- Usuario logueado: ["+currentPrincipalName+"] ["+nombreUsuario+"]");
-
-        List<Module> allmodulos = moduleService.findAllActiveNoEmptyAndAuth(roleslogueados);
-
+        String nombreUsuario=obtenerNombreUsuario();
+        List<Module> allmodulos=obtenerModulosAutorizados();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/home");
-        modelAndView.addObject("currentPrincipalName",currentPrincipalName);
         modelAndView.addObject("nombreUsuario",nombreUsuario);
         modelAndView.addObject("modulos",allmodulos);
         return modelAndView;
@@ -107,9 +97,14 @@ public class LoginController {
 
     @RequestMapping(value="/admin/usuarios", method = RequestMethod.GET)
     public ModelAndView adminUsuarios(){
+
+        String nombreUsuario=obtenerNombreUsuario();
+        List<Module> allmodulos=obtenerModulosAutorizados();
         ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         modelAndView.setViewName("admin/adm-usuarios");
+        modelAndView.addObject("nombreUsuario",nombreUsuario);
+        modelAndView.addObject("modulos",allmodulos);
+
         return modelAndView;
     }
 
@@ -129,5 +124,23 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/access-denied");
         return modelAndView;
+    }
+
+    private String obtenerNombreUsuario(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        User usuario = userService.findUserByEmail(currentPrincipalName);
+        String nombreUsuario = usuario.getName()+" "+usuario.getLastName1();
+        logger.info("GMSYSADMIN- Usuario logueado: ["+currentPrincipalName+"] ["+nombreUsuario+"]");
+        return nombreUsuario;
+    }
+
+    private  List<Module>  obtenerModulosAutorizados(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Collection roleslogueados = userDetails.getAuthorities();
+        List<Module> allmodulos = moduleService.findAllActiveNoEmptyAndAuth(roleslogueados);
+        logger.info("módulos: "+allmodulos.size());
+        return allmodulos;
     }
 }

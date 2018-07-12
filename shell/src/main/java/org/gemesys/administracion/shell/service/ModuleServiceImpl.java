@@ -31,6 +31,8 @@ public class ModuleServiceImpl implements ModuleService {
 
         //Obtiene los módulos que están en status activo
         ArrayList<Module> modulosactivos = moduleRepository.findAllActive();
+
+        logger.debug("modulos activos "+modulosactivos.size());
         ArrayList<Module> modulosactivosNoVacios = new ArrayList<>();
 
         //Obtiene los módulos que no están vacíos de menús
@@ -42,6 +44,7 @@ public class ModuleServiceImpl implements ModuleService {
                 modulosactivosNoVacios.add(item);
             }
         }
+        logger.debug("modulos activos no vacíos "+modulosactivosNoVacios.size());
         return modulosactivosNoVacios;
     }
 
@@ -77,6 +80,9 @@ public class ModuleServiceImpl implements ModuleService {
                     }
                 }
             }
+
+            logger.info("menús autorizados "+menusautorizados.size());
+
             if (menusautorizados != null) {
                 if (!menusautorizados.isEmpty()) {
                     itemModule.setMenus(menusautorizados);
