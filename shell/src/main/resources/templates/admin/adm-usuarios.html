@@ -85,7 +85,7 @@
 
                     var restUserParameters = [];
                     if (textoBusqueda != '') {
-                        source.ajax.url = "/rest/usuarios/search/findByEmailContains";
+                        source.ajax.url = "/rest/usuarios/findUsersByEmail";
                         restUserParameters.push({"name": "email", "value": textoBusqueda});
                     }
                     else {

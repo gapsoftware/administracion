@@ -7,6 +7,7 @@ import org.gemesys.administracion.shell.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public Page<User> findUsersByEmail(String email, Pageable pageable) {
+        return (Page<User>) userRepository.findByEmail(email, pageable);
     }
 
     @Override

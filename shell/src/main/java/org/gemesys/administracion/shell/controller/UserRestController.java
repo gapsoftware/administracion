@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,14 +37,31 @@ public class UserRestController {
                                            @RequestParam("page") int page,
                                            @RequestParam("size") int size)
     {
-        logger.info("GMSYSADMIN - user - Listando todos los usuarios existentes");
+        logger.info("GMSYSADMIN - REST/USUARIOS - Listando todos los usuarios existentes");
         Page<User> resultPage = userService.findAllPaginated(page, size);
 
         if (page > resultPage.getTotalPages()) {
-            logger.error("GMSYSADMIN - users - ERROR: No existen usuarios a listar");
+            logger.error("GMSYSADMIN - REST/USUARIOS - ERROR: No existen usuarios a listar");
             return new ResponseEntity<>("ERROR: No existen usuarios a listar", HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(resultPage, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/rest/usuarios/findUsersByEmail", method = RequestMethod.GET)
+    public ResponseEntity<?> findUsersByEmail(@RequestParam("email") String email,
+                                              Pageable pageable) {
+
+        logger.info("GMSYSADMIN - REST/USUARIOS - Buscando e-mail ["+email+"]");
+        Page<User> resultPage = userService.findUsersByEmail(email, pageable);
+
+        if (resultPage.getTotalPages()<= 0) {
+            logger.error("GMSYSADMIN - REST/USUARIOS - ERROR: No existen usuarios con el e-mail [ "+email+"]");
+            return new ResponseEntity<>("REST/USUARIOS - ERROR: No existen usuarios con el e-mail [ "+email+"]",
+                                        HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(resultPage, HttpStatus.OK);
+    }
+
 }

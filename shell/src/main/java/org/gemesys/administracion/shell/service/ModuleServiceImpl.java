@@ -81,7 +81,7 @@ public class ModuleServiceImpl implements ModuleService {
                 }
             }
 
-            logger.info("menús autorizados "+menusautorizados.size());
+            logger.debug("menús autorizados "+menusautorizados.size());
 
             if (menusautorizados != null) {
                 if (!menusautorizados.isEmpty()) {
@@ -98,7 +98,7 @@ public class ModuleServiceImpl implements ModuleService {
             Iterator<Menu> iterMenuAutorizado = itemModuloAutorizado.getMenus().iterator();
             while (iterMenuAutorizado.hasNext()) {
                 Menu itemMenuAutorizado = iterMenuAutorizado.next();
-                logger.info(itemMenuAutorizado.getName());
+                logger.info(itemMenuAutorizado.getName() + " - url ("+itemMenuAutorizado.getUrl()+")");
             }
         }
         return modulosautorizados;
