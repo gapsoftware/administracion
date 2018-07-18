@@ -1,10 +1,8 @@
 package org.gemesys.administracion.shell.model;
 
-import lombok.Data;
-
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+import java.util.HashSet;
+import java.util.SortedSet;
 
 /**
  * Created by gperezv on 10-04-18.
@@ -31,7 +29,8 @@ public class Module {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "module_menu",
             joinColumns = @JoinColumn(name = "module_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
-    private Set<Menu> menus;
+    @OrderBy("menu_id")
+    private SortedSet<Menu> menus;
 
 //constructors
 
@@ -43,7 +42,7 @@ public class Module {
         this.sortOrder=order;
     }
 
-    public Module(String name, int active, int order, Set<Menu> menus){
+    public Module(String name, int active, int order, SortedSet<Menu> menus){
         this.name=name;
         this.active=active;
         this.sortOrder=order;
@@ -84,11 +83,11 @@ public class Module {
         this.sortOrder = sortorder;
     }
 
-    public Set<Menu> getMenus() {
+    public SortedSet<Menu> getMenus() {
         return menus;
     }
 
-    public void setMenus(Set<Menu> menus) {
+    public void setMenus(SortedSet<Menu> menus) {
         this.menus = menus;
     }
 }

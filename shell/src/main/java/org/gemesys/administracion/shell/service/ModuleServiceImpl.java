@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by gperezv on 10-04-18.
@@ -39,7 +40,7 @@ public class ModuleServiceImpl implements ModuleService {
         Iterator<Module> iter = modulosactivos.iterator();
         while (iter.hasNext()) {
             Module item = iter.next();
-            Set<Menu> menus = item.getMenus();
+            SortedSet<Menu> menus = item.getMenus();
             if (!menus.isEmpty()) {
                 modulosactivosNoVacios.add(item);
             }
@@ -57,13 +58,14 @@ public class ModuleServiceImpl implements ModuleService {
         ArrayList<Module> modulosactivosNoVacios = findAllActiveNoEmpty();
         ArrayList<Module> modulosautorizados = new ArrayList<>();
 
+        logger.debug("modulosActivosNoVacios: "+modulosactivosNoVacios.size());
 
         Iterator<Module> iterModule = modulosactivosNoVacios.iterator();
         while (iterModule.hasNext()) {
             //Obtiene los menús que coinciden con los roles del usuario conectado y los vacía en Set menusautorizados
             Module itemModule = iterModule.next();
-            Set<Menu> menus = itemModule.getMenus();
-            Set<Menu> menusautorizados = new HashSet<>();
+            SortedSet<Menu> menus = itemModule.getMenus();
+            SortedSet<Menu> menusautorizados = new TreeSet<>();
             Iterator<Menu> iterMenu = menus.iterator();
             while (iterMenu.hasNext()) {
                 Menu itemMenu = iterMenu.next();
@@ -81,7 +83,7 @@ public class ModuleServiceImpl implements ModuleService {
                 }
             }
 
-            logger.debug("menús autorizados "+menusautorizados.size());
+            logger.debug("menús autorizados: "+menusautorizados.size());
 
             if (menusautorizados != null) {
                 if (!menusautorizados.isEmpty()) {

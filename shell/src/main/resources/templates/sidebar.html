@@ -4,20 +4,20 @@
 <body>
 <div th:fragment="copy">
     <th:block th:each="modulo : ${modulos}">
-        <div class="col-sm">
-            <div class="card" style="width: 18rem; height: auto">
-                <div class="shadow p-3 mb-5 bg-white rounded">
+        <div class="col-sm shadow p-3 mb-5 bg-white rounded">
+            <div class="card" style="width: auto; height: auto">
+
                     <div class="card-header">
                         <h6 class="card-title" th:text="${modulo.name}">Módulo 1</h6>
                     </div>
-                    <ul class="list-group list-group-flush">
+                    <ol class="list-group list-group-flush">
                         <th:block th:each="menu : ${modulo.menus}">
                             <li class="list-group-item">
                                 <a href="/home" th:href="@{${menu.url}}" th:text="${menu.name}">Menú 1</a>
                             </li>
                         </th:block>
-                    </ul>
-                </div>
+                    </ol>
+
             </div>
         </div>
     </th:block>

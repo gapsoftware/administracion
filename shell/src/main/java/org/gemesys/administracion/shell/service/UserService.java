@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface UserService {
     public User findUserByEmail(String email);
+    public User findUserById(Long id);
     public Page<User> findUsersByEmail(String email, Pageable pageable);
     public Page<User> findAllPaginated(int page, int size);
     public void saveUser(User user);

@@ -1,8 +1,10 @@
 package org.gemesys.administracion.shell.controller;
 
 import org.gemesys.administracion.shell.model.Module;
+import org.gemesys.administracion.shell.model.Role;
 import org.gemesys.administracion.shell.model.User;
 import org.gemesys.administracion.shell.service.ModuleService;
+import org.gemesys.administracion.shell.service.RoleService;
 import org.gemesys.administracion.shell.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -35,6 +38,9 @@ public class LoginController {
 
     @Autowired
     private ModuleService moduleService;
+
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
     public ModelAndView login(){
@@ -105,6 +111,21 @@ public class LoginController {
         modelAndView.addObject("nombreUsuario",nombreUsuario);
         modelAndView.addObject("modulos",allmodulos);
 
+        return modelAndView;
+    }
+
+    @RequestMapping(value="/admin/form-usuario", method = RequestMethod.GET)
+    public ModelAndView editUsuario(@RequestParam("id") Long id){
+
+        List<Module> allmodulos=obtenerModulosAutorizados();
+        List<Role> allroles = roleService.findAll();
+        User user = userService.findUserById(id);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin/form-usuario");
+        modelAndView.addObject("usuario", user);
+        modelAndView.addObject("nombreUsuario", user.getName()+" "+user.getLastName1());
+        modelAndView.addObject("modulos",allmodulos);
+        modelAndView.addObject("allroles",allroles);
         return modelAndView;
     }
 

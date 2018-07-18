@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head lang="es">
-    <title>Gestión de Información del Usuario</title>
+    <title>GEMESYS-Usuarios</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width,
         initial-scale=1, maximum-scale=1, user-scalable=no"/>
@@ -20,12 +20,14 @@
 
 
     <div class="row">
+
         <div class="col-sm-3">
             <div th:replace="sidebar :: copy"></div>
         </div>
 
+        <div class="col-sm-8">
+            <h3>Tabla de Roles y Estados de Usuario</h3>
 
-        <div class="col-sm-9">
             <div class="table-responsive">
                 <table id="adm-usuarios" class="table table-striped table-bordered table-sm">
                     <thead>
@@ -103,6 +105,11 @@
 
                 {
                     data: "email",
+                    render: function (data, type, row) {
+                        if (type == 'display') {
+                            return "<a href='/admin/form-usuario?id=" + row.id + "'" + ">" + data + "</a>"
+                        }
+                    },
                     defaultContent: ''
                 },
 

@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "menu")
-public class Menu {
+public class Menu implements Comparable<Menu> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +26,7 @@ public class Menu {
     private int active;
 
     @Column(name = "sortorder")
-    private int sortorder;
+    private Integer sortorder;
 
     @Column(name = "url")
     private String url;
@@ -74,11 +74,11 @@ public class Menu {
         this.active = active;
     }
 
-    public int getSortorder() {
+    public Integer getSortorder() {
         return sortorder;
     }
 
-    public void setSortorder(int sortorder) {
+    public void setSortorder(Integer sortorder) {
         this.sortorder = sortorder;
     }
 
@@ -96,6 +96,11 @@ public class Menu {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public int compareTo(Menu o) {
+        return Integer.compare(this.sortorder, o.sortorder);
     }
 }
 
