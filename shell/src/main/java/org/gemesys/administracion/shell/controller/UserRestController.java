@@ -11,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +29,7 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/rest/usuarios", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/usuario", method = RequestMethod.GET)
     public ResponseEntity<?> fetchUsuarios(HttpServletRequest request,
                                            @RequestParam("page") int page,
                                            @RequestParam("size") int size)
@@ -48,7 +45,7 @@ public class UserRestController {
         return new ResponseEntity<>(resultPage, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/rest/usuarios/findUsersByEmail", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/usuario/findUsersByEmail", method = RequestMethod.GET)
     public ResponseEntity<?> findUsersByEmail(@RequestParam("email") String email,
                                               Pageable pageable) {
 
@@ -64,4 +61,14 @@ public class UserRestController {
         return new ResponseEntity<>(resultPage, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/rest/usuario/{userid}/rol/{rolid}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteRolUsuario(@PathVariable("userid") Long userid,
+                                              @PathVariable("rolid") Long rolid) {
+
+        System.out.println("id usuario:"+userid+ "id rol: "+rolid);
+
+        userService.deleteRolUsuario(userid, rolid);
+
+        return null;
+    }
 }

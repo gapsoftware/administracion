@@ -17,4 +17,5 @@ public interface UserService {
     public Page<User> findUsersByEmail(String email, Pageable pageable);
     public Page<User> findAllPaginated(int page, int size);
     public void saveUser(User user);
+    public void deleteRolUsuario(Long userid, Long rolid);
 }

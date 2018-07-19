@@ -68,7 +68,7 @@
             serverSide: true,
 
             ajax: {
-                url: "/rest/usuarios",
+                url: "/rest/usuario",
 
                 dataFilter: (function (data) {
 
@@ -87,11 +87,11 @@
 
                     var restUserParameters = [];
                     if (textoBusqueda != '') {
-                        source.ajax.url = "/rest/usuarios/findUsersByEmail";
+                        source.ajax.url = "/rest/usuario/findUsersByEmail";
                         restUserParameters.push({"name": "email", "value": textoBusqueda});
                     }
                     else {
-                        source.ajax.url = "/rest/usuarios";
+                        source.ajax.url = "/rest/usuario";
                         restUserParameters.push({"name": "size", "value": largoSetRegistros});
                         restUserParameters.push({"name": "page", "value": paginaActual});
                     }

@@ -118,8 +118,8 @@ public class LoginController {
     public ModelAndView editUsuario(@RequestParam("id") Long id){
 
         List<Module> allmodulos=obtenerModulosAutorizados();
-        List<Role> allroles = roleService.findAll();
         User user = userService.findUserById(id);
+        List<Role> allroles = roleService.findAllAvailable(user.getRoles());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("admin/form-usuario");
         modelAndView.addObject("usuario", user);

@@ -27,27 +27,30 @@
             <h3>Edición de Datos del Usuario</h3>
             <form action="#" th:action="@{/admin/usuarios}" th:object="${usuario}" method="post">
 
-                <div class="form-group shadow-sm p-3 mb-5 bg-white rounded">
-                        <input type="hidden" th:value="*{id}"/>
-                        <input type="text" id="nombre" name="nombre" th:value="*{name}"/>
-                        <input type="text" id="apellido1" name="apellido1" th:value="*{lastName1}"/>
-                        <input type="text" id="apellido2" name="apellido2" th:value="*{lastName2}"/>
-                        <input type="checkbox" id="estado" name="estado" th:checked="*{active==1}? true: false"/>
+                <div class="form-group shadow p-3 mb-5 bg-white rounded">
+                    <input type="hidden" th:value="*{id}"/>
+                    <input type="text" id="nombre" name="nombre" th:value="*{name}"/>
+                    <input type="text" id="apellido1" name="apellido1" th:value="*{lastName1}"/>
+                    <input type="text" id="apellido2" name="apellido2" th:value="*{lastName2}"/>
+                    <input type="checkbox" id="estado" name="estado" th:checked="*{active==1}? true: false"/>
                 </div>
 
-                <div class="form-group">
-                    <span th:each="roluser : *{roles}">
-                        <a href="" class='badge badge-info' th:text="${roluser.role}"></a>
+                <div class="form-group shadow p-3 mb-5 bg-white rounded">
+                    <span th:each="roluser,status:*{roles}">
+                        <a class="badge badge-danger"
+                              th:for="|roluser${status.index}|"
+                              th:text="${roluser.role}+' x'"
+                              href=""
+                              th:onclick="'eliminaRolUsuario('+*{id}+','+${roluser.id}+')'">
+                        </a>
                     </span>
                 </div>
 
-
-                <div class="form-group blu-margin" >
+                <div class="form-group blu-margin">
                     <select class="form-control" th:field="${allroles}" id="comboroles">
                         <option value="0" th:text="Seleccionerol"></option>
                         <option th:each="rol : ${allroles}"
                                 th:value="${rol.id}"
-                                th:readonly="${rol} == ${roluser}"
                                 th:text="${rol.role}">
                         </option>
                     </select>
@@ -63,4 +66,18 @@
 </div>
 </div>
 </body>
+
+<script>
+
+        function eliminaRolUsuario(userid, rolid) {
+
+            $.ajax({
+                url: '/rest/usuario/'+userid+'/rol/'+rolid,
+                type: 'DELETE',
+                success: function(result) {
+                }
+            });
+        }
+
+</script>
 </html>

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 import static javax.persistence.TemporalType.DATE;
 
@@ -16,7 +17,7 @@ import static javax.persistence.TemporalType.DATE;
  */
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 public class User {
 
 // attributes
@@ -67,7 +68,8 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
                joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    @OrderBy("name")
+    private SortedSet<Role> roles;
 
 // getters and setters
 
@@ -127,11 +129,11 @@ public class User {
         this.active = active;
     }
 
-    public Set<Role> getRoles() {
+    public SortedSet<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(SortedSet<Role> roles) {
         this.roles = roles;
     }
 

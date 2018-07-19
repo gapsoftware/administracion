@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role implements Comparable<Role> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="role_id")
@@ -31,4 +31,8 @@ public class Role {
     }
 
 
+    @Override
+    public int compareTo(Role o) {
+        return Integer.compare(this.getId(), o.getId());
+    }
 }
