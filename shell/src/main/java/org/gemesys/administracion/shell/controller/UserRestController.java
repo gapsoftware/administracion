@@ -60,15 +60,4 @@ public class UserRestController {
 
         return new ResponseEntity<>(resultPage, HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/rest/usuario/{userid}/rol/{rolid}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteRolUsuario(@PathVariable("userid") Long userid,
-                                              @PathVariable("rolid") Long rolid) {
-
-        System.out.println("id usuario:"+userid+ "id rol: "+rolid);
-
-        userService.deleteRolUsuario(userid, rolid);
-
-        return null;
-    }
 }

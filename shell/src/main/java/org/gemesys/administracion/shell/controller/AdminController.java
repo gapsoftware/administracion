@@ -9,29 +9,28 @@ import org.gemesys.administracion.shell.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by gperezv on 07-02-18.
+ * Created by gperezv on 20-07-18.
  */
 
-
 @Controller
-public class LoginController {
+public class AdminController {
 
-    private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private final static Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @Autowired
     private UserService userService;
@@ -39,60 +38,74 @@ public class LoginController {
     @Autowired
     private ModuleService moduleService;
 
-    @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-    public ModelAndView login(){
+    @Autowired
+    private RoleService roleService;
+
+    @RequestMapping(value="/admin/main", method = RequestMethod.GET)
+    public ModelAndView admin_main(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        modelAndView.setViewName("admin/main");
         return modelAndView;
     }
 
-    @RequestMapping(value="/home", method = RequestMethod.GET)
-    public ModelAndView home(){
+    @RequestMapping(value="/admin/usuarios", method = RequestMethod.GET)
+    public ModelAndView adminUsuarios(){
 
         String nombreUsuario=obtenerNombreUsuario();
         List<Module> allmodulos=obtenerModulosAutorizados();
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/home");
+        modelAndView.setViewName("admin/adm-usuarios");
         modelAndView.addObject("nombreUsuario",nombreUsuario);
         modelAndView.addObject("modulos",allmodulos);
+
         return modelAndView;
     }
 
-    @RequestMapping(value="/registration", method = RequestMethod.GET)
-    public ModelAndView registration(){
+    @RequestMapping(value="/admin/form-usuario", method = RequestMethod.GET)
+    public ModelAndView editUsuario(@RequestParam("id") Long id){
+
+        List<Module> allmodulos=obtenerModulosAutorizados();
+        User user = userService.findUserById(id);
+        List<Role> allroles = roleService.findAllAvailable(user.getRoles());
         ModelAndView modelAndView = new ModelAndView();
-        User user = new User();
-        modelAndView.addObject("user", user);
-        modelAndView.setViewName("/registration");
+        modelAndView.setViewName("admin/form-usuario");
+        modelAndView.addObject("usuario", user);
+        modelAndView.addObject("nombreUsuario", user.getName()+" "+user.getLastName1());
+        modelAndView.addObject("modulos",allmodulos);
+        modelAndView.addObject("allroles",allroles);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByEmail(user.getEmail());
-        if (userExists != null) {
-            bindingResult
-                    .rejectValue("email", "error.user",
-                            "There is already a user registered with the email provided");
-        }
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("/registration");
-        } else {
-            userService.saveUser(user);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user", new User());
-            modelAndView.setViewName("/registration");
+    @RequestMapping(value = "/admin/usuario/{userid}/rol/{rolid}", method = RequestMethod.DELETE)
+    public ModelAndView deleteRolUsuario(@PathVariable("userid") Long userid,
+                                         @PathVariable("rolid") Long rolid) {
 
-        }
-        return modelAndView;
+        userService.deleteRolUsuario(userid, rolid);
+
+        return null;
     }
 
-    @RequestMapping(value="/access-denied", method = RequestMethod.GET)
-    public ModelAndView noaccess(){
+    @RequestMapping(value = "/admin/usuario/{userid}/rol/{rolid}", method = RequestMethod.PUT)
+    public ModelAndView addRolUsuario(@PathVariable("userid") Long userid,
+                                      @PathVariable("rolid") Long rolid) {
+
+
+        userService.addRolUsuario(userid, rolid);
+        List<Module> allmodulos=obtenerModulosAutorizados();
+        User user = userService.findUserById(userid);
+        List<Role> allroles = roleService.findAllAvailable(user.getRoles());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/access-denied");
+        modelAndView.setViewName("admin/form-usuario");
+        modelAndView.addObject("usuario", user);
+        modelAndView.addObject("nombreUsuario", user.getName()+" "+user.getLastName1());
+        modelAndView.addObject("modulos",allmodulos);
+        modelAndView.addObject("allroles",allroles);
         return modelAndView;
+
+
+
     }
 
     private String obtenerNombreUsuario(){
@@ -112,6 +125,4 @@ public class LoginController {
         logger.info("módulos: "+allmodulos.size());
         return allmodulos;
     }
-
-
 }

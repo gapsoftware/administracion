@@ -60,5 +60,8 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteRolUsuario(userid, rolid);
     }
 
-
+    @Override
+    public void addRolUsuario(Long userid, Long rolid) {
+        userRepository.addRolUsuario(userid, rolid);
+    }
 }

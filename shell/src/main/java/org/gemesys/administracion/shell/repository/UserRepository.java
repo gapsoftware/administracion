@@ -34,4 +34,9 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     @Transactional
     @Query(value = "delete from user_role where user_id= :usuarioid and role_id = :rolid", nativeQuery = true)
     void deleteRolUsuario(@Param("usuarioid") Long usuarioid, @Param("rolid") Long rolid);
+
+    @Modifying
+    @Transactional
+    @Query(value = "insert into user_role values (:usuarioid,:rolid)", nativeQuery = true)
+    void addRolUsuario(@Param("usuarioid") Long usuarioid, @Param("rolid") Long rolid);
 }

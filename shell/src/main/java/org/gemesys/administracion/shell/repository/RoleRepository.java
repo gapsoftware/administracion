@@ -15,6 +15,7 @@ import java.util.List;
 @Repository("roleRepository")
 public interface RoleRepository extends JpaRepository<Role, Integer> {
     Role findByRole(String role);
-    List<Role> findAll();
 
+    @Query("select R from Role R where R.role <> 'SUPER'")
+    List<Role> findAll();
 }

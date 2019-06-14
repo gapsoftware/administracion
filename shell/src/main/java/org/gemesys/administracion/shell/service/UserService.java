@@ -18,4 +18,5 @@ public interface UserService {
     public Page<User> findAllPaginated(int page, int size);
     public void saveUser(User user);
     public void deleteRolUsuario(Long userid, Long rolid);
+    public void addRolUsuario(Long userid, Long rolid);
 }
